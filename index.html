@@ -75,9 +75,14 @@ partPhoneNumField.style.backgroundColor='white';
 partEmailField.style.backgroundColor='white';
 $('#msg').text("");
 errMsg.style.backgroundColor='white';
-   r=syncAjax("http://50.63.128.135/~csashesi/class2015/aba-debrah/EventOrganizer/eventOrganiserapp_action.php?cmd=1&name="+partName+"&phoneNum="+partPhoneNum+"&email="+partEmail);
-  $('#msg').text("Registeration was successful");
-  $('#addParticipant').attr("disabled", true);
+   
+r=syncAjax("http://50.63.128.135/~csashesi/class2015/aba-debrah/EventOrganizer/eventOrganiserapp_action.php?cmd=1&name="+partName+"&phoneNum="+partPhoneNum+"&email="+partEmail);
+$('#partNameField').val('');
+$('#partPhoneNumField').val('');
+$('#partEmailField').val('');
+$('#msg').text("Registeration was successful");
+location.reload();
+  
 }
  });
  });
@@ -102,7 +107,48 @@ $('#displayList').attr("disabled", true);
 }
  
  });
-});
+
+ });
+
+
+// $(document).ready(function(){
+// //ADD EVENTS
+//  $("#addEvent").click(function(){
+// var evenName = document.getElementById('eventName').value;
+// var location = document.getElementById('location').value;
+// var evenDate = document.getElementById('eventdate').value;
+// var evenTime = document.getElementById('eventtime').value;
+// var evenNameField = document.getElementById('eventName');
+// var locationField = document.getElementById('location');
+// var evenDateField = document.getElementById('eventdate');
+// var evenTimeField = document.getElementById('eventtime');
+// var errMsg = document.getElementById('msg2');
+
+// if(evenName == "" || location == "" || evenDate == "" || evenTime== ""){
+// $('#msg2').text("Please fill all entries");
+// errMsg.style.backgroundColor='#FF8080';
+// evenNameField.style.backgroundColor='#FF8080';
+// locationField.style.backgroundColor='#FF8080';
+// evenDateField.style.backgroundColor='#FF8080';
+// evenTimeField.style.backgroundColor='#FF8080';
+// }
+
+// else{
+// r=syncAjax("http://50.63.128.135/~csashesi/class2015/aba-debrah/EventOrganizer/eventOrganiserapp_action.php?cmd=4&ename="+evenName+"&elocation="+location+"&edate="+evenDate+"&etime="+evenTime);
+//   $('#msg2').text("Adding event was successful");
+//   $('#eventName').text(" ");
+//   $('#location').text(" ");
+//   $('#eventDate').text(" ");
+//   $('#eventTime').text(" ");
+// evenNameField.style.backgroundColor='white';
+// locationField.style.backgroundColor='white';
+// evenDateField.style.backgroundColor='white';
+// evenTimeField.style.backgroundColor='white';
+// }
+
+// });
+
+// });
 
 </script>
 </head>
@@ -112,7 +158,8 @@ $('#displayList').attr("disabled", true);
       <div data-role="navbar">
             <ul>  
            <li><a href="#home" data-transition="pop" data-icon="home" class="ui-btn-active ui-disabled">Home</a></li> 
-           <li><a href="#participants" data-transition="flip" data-icon="carat-r">View Participants</a></li>
+<!--            <li><a href="#events" data-transition="flip" data-icon="carat-r">Events</a></li> -->
+           <li><a href="#participants" data-transition="pop" data-icon="carat-r">Participants</a></li>
            </ul>
            <h1 align="center" font-family:"Comic Sans MS">The EventOrganizer</h1>
             </div>
@@ -121,7 +168,7 @@ $('#displayList').attr("disabled", true);
 
 <div role="main" class="ui-content" align="center"> 
     <p style='font-size:100%' font ="family:Comic Sans MS"><b>
-      Welcome to the EventOrganizer where you can plan your events with easy and class</b></p>
+      Welcome to the EventOrganizer, the best app to plan your events with easy and class</b></p>
     <p style='font-size:100%'><b>Click below to get started!!!!!</b></p>
     <p style='font-size:290%'></p>
     <button id= "register" data-theme="b">Get Started</button>
@@ -157,7 +204,7 @@ $('#displayList').attr("disabled", true);
   
 </div>
 <p id="msg" font-weight="bold"></p>
-<button id= "addParticipant" data-theme="b" align="center">Register</button>
+<button id= "addParticipant" data-theme="b" align="center">REGISTER</button>
 </div>
 <p style='font-size:300%'></p>
 <div data-role="footer">
@@ -172,7 +219,8 @@ $('#displayList').attr("disabled", true);
            <div data-role="navbar">
             <ul>  
            <li><a href="#home" data-transition="pop" data-icon="home" >Home</a></li>
-           <li><a href="#participants" data-transition="pop" data-icon="carat-r" class="ui-btn-active ui-disabled">View Participants</a></li>
+           <li><a href="#participants" data-transition="pop" data-icon="carat-d" class="ui-btn-active ui-disabled">Participants</a></li>
+          <!-- <li><a href="#events" data-transition="pop" data-icon="carat-r">Events</a></li> -->
            </ul>
              <h1 align="center">The EventOrganizer</h1>
             </div>
@@ -191,5 +239,43 @@ $('#displayList').attr("disabled", true);
 
 <!--END OF PAGE--> 
 </div>
+
+<!--Events-->
+<!-- <div data-role="page" id="events" data-theme="a">
+      <div data-role="header">
+           <div data-role="navbar">
+            <ul>  
+           <li><a href="#home" data-transition="pop" data-icon="home" >Home</a></li>
+           <li><a href="#participants" data-transition="pop" data-icon="carat-d" class="ui-btn-active ui-disabled">Events</a></li>
+           <li><a href="#participants" data-transition="pop" data-icon="carat-r">Participants</a></li> 
+           </ul>
+             <h1 align="center">The EventOrganizer</h1>
+            </div>
+
+       </div>
+<div role="main" class="ui-content" align="center">
+  <h2>Please fill in the details below:</h2>
+  <div data-role="fieldcontain">
+  <label for="name"><b>Event Name:</b></label>
+  <input type="text" id="eventName" value="" placeholder="Birthday Party" />
+   <label for="name"><b>Location:</b></label>
+  <input type="text" id="location" value="" placeholder="At Home"/>
+   <label for="name"><b>Date:</b></label>
+  <input type="date" name="name" id="eventdate" value="" placeholder="10/10/2014" />
+  <label for="name"><b>Time:</b></label>
+  <input type="time" name="name" id="eventtime" value="" placeholder="12:30" />
+  
+</div>
+<p id="msg2" font-weight="bold"></p>
+<button id= "addEvent" data-theme="b" align="center">ADD</button>
+
+  
+</div>
+<div data-role="footer">
+        <h1> Developed by deeaba</h1>
+</div>
+
+<!--END OF PAGE--> 
+
 </body>
 </html>
