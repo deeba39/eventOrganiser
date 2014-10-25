@@ -1,0 +1,195 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="jquery.mobile-1.4.4.min.css"/>
+<script src ="jquery-1.10.2.js"></script>
+<script src ="jquery.mobile-1.4.4.min.js"></script>
+<script src ="jquery.mobile-1.4.4.js"></script>
+<script type="text/javascript" src ="jquery.mobile-1.4.4.min.map"></script>
+<script>
+			function syncAjax(u){
+			console.log(u);
+				var obj=$.ajax(
+					{url:u,
+					 async:false
+					 }
+				);
+				console.log(obj.responseText);
+				return $.parseJSON(obj.responseText);
+				
+			}
+
+  $(document).ready(function(){
+ $("#register").click(function(){
+  $.mobile.changePage('#registerations');
+ });
+
+
+//ADD PARTICIPANTS
+ $("#addParticipant").click(function(){
+var partName = document.getElementById('name').value;
+ var partPhoneNum = document.getElementById('phoneNmuber').value;
+var partEmail = document.getElementById('emailAddress').value;
+var partNameField = document.getElementById('name');
+var partPhoneNumField = document.getElementById('phoneNmuber');
+var partEmailField = document.getElementById('emailAddress');
+var errMsg = document.getElementById('msg');
+
+
+var telformat = /^[\d\.\-]+$/;
+var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;   
+
+if(partName == "" && partPhoneNum == "" && partEmail == ""){
+$('#msg').text("Please fill all entries");
+errMsg.style.backgroundColor='#FF8080';
+partNameField.style.backgroundColor='#FF8080';
+partPhoneNumField.style.backgroundColor='#FF8080';
+partEmailField.style.backgroundColor='#FF8080';
+}
+else if(partPhoneNum == "" && !telformat.test(partPhoneNum) && partEmail == ""){
+  $('#msg').text("Invalid number or empty field");
+  errMsg.style.backgroundColor='#FF8080';
+partNameField.style.backgroundColor='white';
+partPhoneNumField.style.backgroundColor='#FF8080';
+partEmailField.style.backgroundColor='#FF8080';
+}
+else if(partPhoneNum.length > 10 || partPhoneNum.length < 10){
+ $('#msg').text("Please enter 10 digits only");
+ errMsg.style.backgroundColor='#FF8080';
+ partPhoneNumField.style.backgroundColor='#FF8080';
+}
+else if(partPhoneNum.charAt(0) != "0"){
+ $('#msg').text("Phone number should start with 0");
+ errMsg.style.backgroundColor='#FF8080';
+ partPhoneNumField.style.backgroundColor='#FF8080';
+}
+else if(partEmail == "" && !partEmail.match(mailformat)){
+  $('#msg').text("Invalid email or empty field");
+errMsg.style.backgroundColor='#FF8080';
+partNameField.style.backgroundColor='white';
+partPhoneNumField.style.backgroundColor='white';
+partEmailField.style.backgroundColor='#FF8080';
+}
+else{
+partNameField.style.backgroundColor='white';
+partPhoneNumField.style.backgroundColor='white';
+partEmailField.style.backgroundColor='white';
+$('#msg').text("");
+errMsg.style.backgroundColor='white';
+   r=syncAjax("http://50.63.128.135/~csashesi/class2015/aba-debrah/EventOrganizer/eventOrganiserapp_action.php?cmd=1&name="+partName+"&phoneNum="+partPhoneNum+"&email="+partEmail);
+  $('#msg').text("Registeration was successful");
+  $('#addParticipant').attr("disabled", true);
+}
+ });
+ });
+
+
+$(document).ready(function(){
+//DISPLAY PARTICIPANTS
+$("#displayList").click(function(){
+  r=syncAjax("http://50.63.128.135/~csashesi/class2015/aba-debrah/EventOrganizer/eventOrganiserapp_action.php?cmd=2");
+  var x=1;
+ for (var i = 0; i < r.Participants_Details.length; i++) {
+var participantsContent='<div data-role="collapsible">'+
+   '<h3 align="center">' + 'Participant '+ x +'</h3>'+
+   '<ul data-role="listview" align="center">'+
+   '<li> <b> Participant Name:</b> '+  r.Participants_Details[i].Participants_name+'</li>'+
+   '<li> <b> Phone Number: </b> '+  r.Participants_Details[i].Tel_number+'</li>'+
+   '<li> <b> Email: </b> '+  r.Participants_Details[i].mail+'</li>'+
+   '</ul></div>';
+  x++;
+$(participantsContent).appendTo('#participantsList').trigger('create');
+$('#displayList').attr("disabled", true);
+}
+ 
+ });
+});
+
+</script>
+</head>
+  <!--MainPage-->
+<div data-role="page" id="home" data-theme="a">
+    <div data-role="header" data-position="fixed">
+      <div data-role="navbar">
+            <ul>  
+           <li><a href="#home" data-transition="pop" data-icon="home" class="ui-btn-active ui-disabled">Home</a></li> 
+           <li><a href="#participants" data-transition="flip" data-icon="carat-r">View Participants</a></li>
+           </ul>
+           <h1 align="center" font-family:"Comic Sans MS">The EventOrganizer</h1>
+            </div>
+		 
+      </div>
+
+<div role="main" class="ui-content" align="center"> 
+    <p style='font-size:100%' font ="family:Comic Sans MS"><b>
+      Welcome to the EventOrganizer where you can plan your events with easy and class</b></p>
+    <p style='font-size:100%'><b>Click below to get started!!!!!</b></p>
+    <p style='font-size:290%'></p>
+    <button id= "register" data-theme="b">Get Started</button>
+</div>
+<p style='font-size:300%'></p>
+  <div data-role="footer">
+         <h3> Developed by deeaba</h3>
+   </div>
+  <!--END OF PAGE--> 
+</div>
+
+<!--Registerations Page-->
+<div data-role="page" id="registerations" data-theme="a">
+       <div data-role="header">
+           <div data-role="navbar">
+            <ul>  
+           <li><a href="#home" data-transition="flip" data-icon="home" >Home</a></li>
+           <li><a href="#reserve" data-transition="pop" data-icon="carat-r" class="ui-btn-active ui-disabled">Registerations</a></li>
+           </ul>
+           <h1 align="center">The EventOrganizer</h1>
+            </div>
+        </div>
+
+<div role="main" class="ui-content" align="center">
+  <h2>Please fill in the details below:</h2>
+  <div data-role="fieldcontain">
+  <label for="name"><b>Name:</b></label>
+  <input type="text" id="name" value="" placeholder="Estella Brown" />
+   <label for="name"><b>Phone number:</b></label>
+  <input type="tel" id="phoneNmuber" value="" placeholder="054111111"/>
+   <label for="name"><b>Email Address:</b></label>
+  <input type="email" name="name" id="emailAddress" value="" placeholder="estel@brown.com" />
+  
+</div>
+<p id="msg" font-weight="bold"></p>
+<button id= "addParticipant" data-theme="b" align="center">Register</button>
+</div>
+<p style='font-size:300%'></p>
+<div data-role="footer">
+        <h3> Developed by deeaba</h3>
+</div>
+ <!--END OF PAGE--> 
+</div>
+
+<!--ViewParticipants-->
+<div data-role="page" id="participants" data-theme="a">
+	    <div data-role="header">
+           <div data-role="navbar">
+            <ul>  
+           <li><a href="#home" data-transition="pop" data-icon="home" >Home</a></li>
+           <li><a href="#participants" data-transition="pop" data-icon="carat-r" class="ui-btn-active ui-disabled">View Participants</a></li>
+           </ul>
+             <h1 align="center">The EventOrganizer</h1>
+            </div>
+
+       </div>
+<div role="main" class="ui-content" align="center">
+
+	<br>
+	<h3 align="center">Click button below to view participants.</h3>
+      <button id="displayList" data-theme="b">View Participants</button> 
+      <div id="participantsList" data-role="collapsible-set"></div>
+</div>
+<div data-role="footer">
+        <h1> Developed by deeaba</h1>
+</div>
+
+<!--END OF PAGE--> 
+</div>
+</body>
+</html>
